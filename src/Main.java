@@ -1,17 +1,40 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Map<String, List<String>> phoneBook = new HashMap<>();
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        addContact(phoneBook, "Mary", "+7383123");
+        addContact(phoneBook, "Alex", "+7383321");
+        addContact(phoneBook, "Lucy", "+7383456");
+        addContact(phoneBook, "Mary", "+7383777");
+        addContact(phoneBook, "Gans", "+7383654");
+        addContact(phoneBook, "Lilu", "+7383000");
+        addContact(phoneBook, "Sara", "+7383001");
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        printMain(phoneBook);
+    }
+
+    private static void addContact(Map<String, List<String>> phoneBook, String name, String phoneNumber) {
+        phoneBook.computeIfAbsent(name, k -> new ArrayList<>()).add(phoneNumber);
+    }
+
+    private static void printMain(Map<String, List<String>> phoneBook) {
+
+        List<Map.Entry<String, List<String>>> entries = new ArrayList<>(phoneBook.entrySet());
+
+        entries.sort(Comparator.comparingInt(entry -> entry.getValue().size()));
+
+        for (int i = entries.size() - 1; i >= 0; i--) {
+            Map.Entry<String, List<String>> entry = entries.get(i);
+            String name = entry.getKey();
+            List<String> phoneNumbers = entry.getValue();
+
+            System.out.println(name + ": " + phoneNumbers);
         }
     }
 }
